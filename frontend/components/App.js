@@ -49,50 +49,85 @@ export default function App() {
     }
   };
 
-  const getArticles = () => {
-    // ✨ implement
-    // We should flush the message state, turn on the spinner
-    // and launch an authenticated request to the proper endpoint.
-    // On success, we should set the articles in their proper state and
-    // put the server success message in its proper state.
-    // If something goes wrong, check the status of the response:
-    // if it's a 401 the token might have gone bad, and we should redirect to login.
-    // Don't forget to turn off the spinner!
+  const getArticles = async () => {
+    setSpinnerOn(true);
+    setMessage('');
+    try {
+      const response = await axiosWithAuth().get(articlesUrl);
+      setArticles(response.data);
+      setMessage('Successfully retrieved articles!');
+    } catch (error) {
+      if (error.response.status === 401) {
+        setMessage('Session expired. Please login again.');
+        redirectToLogin();
+      } else {
+        setMessage('Error retrieving articles.');
+      }
+    }
+    setSpinnerOn(false);
   }
-
-  const postArticle = article => {
-    // ✨ implement
-    // The flow is very similar to the `getArticles` function.
-    // You'll know what to do! Use log statements or breakpoints
-    // to inspect the response from the server.
+  const postArticle = async article => {
+    setSpinnerOn(true);
+    setMessage('');
+    try {
+      await axiosWithAuth().post(articlesUrl, article);
+      setMessage('Successfully posted new article!');
+      getArticles();
+    } catch (error) {
+      setMessage('Error posting new article.');
+    }
+    setSpinnerOn(false);
   }
-
-  const updateArticle = ({ article_id, article }) => {
-    // ✨ implement
-    // You got this!
+  
+  const updateArticle = async ({ article_id, article }) => {
+    setSpinnerOn(true);
+    setMessage('');
+    try {
+      await axiosWithAuth().put(`${articlesUrl}/${article_id}`, article);
+      setMessage('Successfully updated article!');
+      getArticles();
+    } catch (error) {
+      setMessage('Error updating article.');
+    }
+    setSpinnerOn(false);
   }
-
-  const deleteArticle = article_id => {
-    // ✨ implement
-  }
+  
+  const deleteArticle = async article_id => {
+    setSpinnerOn(true);
+    setMessage('');
+    try {
+      await axiosWithAuth().delete(`${articlesUrl}/${article_id}`);
+      setMessage('Successfully deleted article!');
+      getArticles();
+    } catch (error) {
+      setMessage('Error deleting article.');
+    }
+    setSpinnerOn(false);
+  }  
 
   return (
     // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <>
-    <Spinner spinnerOn={spinnerOn} />
+    <Spinner on={spinnerOn} />
     <Message message={message} />
     <button id="logout" onClick={logout}>Logout from app</button>
     <div id="wrapper" style={{ opacity: spinnerOn ? "0.25" : "1" }}>
-      {/* rest of JSX... */}
       <Routes>
         <Route path="/" element={<LoginForm login={login} />} />
         <Route path="articles" element={
-          <>
-            <ArticleForm />
-            <Articles />
-          </>
-        } />
-        </Routes>
+      <>
+        <ArticleForm postArticle={postArticle}
+          updateArticle={updateArticle}
+          setCurrentArticleId={setCurrentArticleId}
+          currentArticle={articles.find(a => a.article_id === currentArticleId)} />
+        <Articles articles={articles}
+          getArticles={getArticles}
+          deleteArticle={deleteArticle}
+          setCurrentArticleId={setCurrentArticleId}
+          currentArticleId={currentArticleId} />
+        </>
+          } />
+      </Routes>
         <footer>Bloom Institute of Technology 2022</footer>
       </div>
     </>
