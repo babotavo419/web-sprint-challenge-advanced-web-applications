@@ -1,30 +1,29 @@
-import React, { useState } from 'react'
-import PT from 'prop-types'
+import React, { useState } from 'react';
+import PT from 'prop-types';
 
 const initialFormValues = {
   username: '',
   password: '',
-}
-export default function LoginForm(props) {
-  const [values, setValues] = useState(initialFormValues)
-  // ✨ where are my props? Destructure them here
+};
+
+export default function LoginForm({ login }) {  // login function passed as prop
+  const [values, setValues] = useState(initialFormValues);
 
   const onChange = evt => {
-    const { id, value } = evt.target
-    setValues({ ...values, [id]: value })
-  }
+    const { id, value } = evt.target;
+    setValues({ ...values, [id]: value });
+  };
 
   const onSubmit = evt => {
-    evt.preventDefault()
-    // ✨ implement
-  }
+    evt.preventDefault();
+
+    // Call login function with form data
+    login(values.username, values.password);
+  };
 
   const isDisabled = () => {
-    // ✨ implement
-    // Trimmed username must be >= 3, and
-    // trimmed password must be >= 8 for
-    // the button to become enabled
-  }
+    return values.username.trim().length < 3 || values.password.trim().length < 8;
+  };
 
   return (
     <form id="loginForm" onSubmit={onSubmit}>
@@ -45,10 +44,9 @@ export default function LoginForm(props) {
       />
       <button disabled={isDisabled()} id="submitCredentials">Submit credentials</button>
     </form>
-  )
+  );
 }
 
-// 🔥 No touchy: LoginForm expects the following props exactly:
 LoginForm.propTypes = {
-  login: PT.func.isRequired,
-}
+  login: PT.func.isRequired,  // validate login function prop
+};
