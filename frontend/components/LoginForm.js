@@ -18,7 +18,7 @@ export default function LoginForm({ login }) {  // login function passed as prop
     evt.preventDefault();
 
     // Call login function with form data
-    login(values.username, values.password);
+    login({username:values.username, password:values.password});
   };
 
   const isDisabled = () => {

@@ -94,9 +94,12 @@ async function login(user) {
   }
 }
 
-async function checkToken(token) {
-  return jwt.verify(token, thisShouldBeSecret)
+async function checkToken(tokenWithBearer) {
+  const token = tokenWithBearer.split(" ")[1];
+  const decodedToken = jwt.verify(token, thisShouldBeSecret);
+  return decodedToken;
 }
+
 
 async function getArticles(token) {
   try {

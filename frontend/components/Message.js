@@ -10,12 +10,16 @@ const opacity = keyframes`
 const StyledMessage = styled.div`
   animation: ${opacity} 1s forwards;
 `
+const MessageContainer = styled.div`
+`;
 
 export default function Message({ message }) {
   return (
-    <StyledMessage key={message} id="message">
+    <MessageContainer>
+    <StyledMessage key={message} id="message" className="Message__StyledMessage-sc-51el9x-0 eZpUtz">
       {message}
     </StyledMessage>
+  </MessageContainer>
   )
 }
 
