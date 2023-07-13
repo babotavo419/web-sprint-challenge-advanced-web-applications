@@ -6,7 +6,6 @@ import LoginForm from './LoginForm';
 import Message from './Message';
 import ArticleForm from './ArticleForm';
 import Spinner from './Spinner';
-import '../styles/reset.css'
 import '../styles/styles.css'
 
 export default function App() {
