@@ -23,14 +23,16 @@ export default function ArticleForm({ postArticle, updateArticle, setCurrentArti
     setValues({ ...values, [id]: value })
   }
 
-  const onSubmit = evt => {
+  const onSubmit = async (evt) => {
     evt.preventDefault()
     if (currentArticle) {
-      updateArticle({ article_id: currentArticle.article_id, article: values });
+      await updateArticle({ article_id: currentArticle.article_id, article: values });
+      setCurrentArticleId(null);
     } else {
-      postArticle(values);
+      await postArticle(values);
+      setValues(initialFormValues);
     }
-  }
+  }    
 
   const isDisabled = () => {
     return !(values.title && values.text && values.topic);

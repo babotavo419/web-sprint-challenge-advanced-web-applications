@@ -77,7 +77,6 @@ export default function App() {
     try {
       await axiosWithAuth.post('/articles', article);
       setMessage('Successfully posted new article!');
-      getArticles();
     } catch (error) {
       setMessage('Error posting new article.');
     }
