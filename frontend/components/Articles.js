@@ -13,6 +13,8 @@ export default function Articles({ articles, getArticles, deleteArticle, setCurr
 
   const handleEdit = (article_id) => {
     setCurrentArticleId(article_id);
+    setCurrentArticleId(null);
+    setCurrentArticle(null);
   }
 
   const handleDelete = (article_id) => {

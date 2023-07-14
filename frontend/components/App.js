@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axiosWithAuth from '../axios/axiosWithAuth';
 import { NavLink, Routes, Route, useNavigate } from 'react-router-dom';
 import Articles from './Articles';
@@ -12,6 +12,7 @@ export default function App() {
   const [articles, setArticles] = useState([])
   const [currentArticleId, setCurrentArticleId] = useState()
   const [spinnerOn, setSpinnerOn] = useState(false)
+  const [currentArticle, setCurrentArticle] = useState(null);
 
   const navigate = useNavigate();
   const redirectToLogin = () => navigate('/');
@@ -22,6 +23,15 @@ export default function App() {
     setMessage('Goodbye!');
     redirectToLogin();
   };
+
+  useEffect(() => {
+    if (currentArticleId != null) {
+      const article = articles.find(art => art.article_id === currentArticleId);
+      setCurrentArticle(article);
+    } else {
+      setCurrentArticle(null);
+    }
+  }, [currentArticleId, articles]);
 
   const login = async ({ username, password }) => {
     setMessage(null);
@@ -50,7 +60,6 @@ export default function App() {
   setMessage('');
 
   try {
-    console.log('getArticles');
     const response = await axiosWithAuth.get('/articles');
     if (response.data.articles && Array.isArray(response.data.articles)) {
       setArticles(response.data.articles);
@@ -70,50 +79,53 @@ export default function App() {
   setSpinnerOn(false);
 }, []);
   
-  const postArticle = async (article) => {
-    setSpinnerOn(true);
-    setMessage('');
+const postArticle = async (article) => {
+  setSpinnerOn(true);
+  setMessage('');
 
-    try {
-      await axiosWithAuth.post('/articles', article);
-      setMessage('Successfully posted new article!');
-    } catch (error) {
-      setMessage('Error posting new article.');
-    }
+  try {
+    const response = await axiosWithAuth.post('/articles', article);
+    setMessage('Successfully posted new article!');
+    await getArticles();
+  } catch (error) {
+    setMessage('Error posting new article.');
+  }
+
+  setSpinnerOn(false);
+  return Promise.resolve();
+};
+
+const updateArticle = async ({ article_id, article }) => {
+  setSpinnerOn(true);
+  setMessage('');
+
+  try {
+    const response = await axiosWithAuth.put(`/articles/${article_id}`, article);
+    setMessage('Successfully updated article!');
+    await getArticles();
+  } catch (error) {
+    setMessage('Error updating article.');
+  }
+
+  setSpinnerOn(false);
+  return Promise.resolve(); 
+};
+
   
-    setSpinnerOn(false);
-  };
-  
-  const updateArticle = async ({ article_id, article }) => {
-    setSpinnerOn(true);
-    setMessage('');
-  
-    try {
-    
-      await axiosWithAuth.put(`/articles/${article_id}`, article);
-      setMessage('Successfully updated article!');
-      getArticles();
-    } catch (error) {
-      setMessage('Error updating article.');
-    }
-  
-    setSpinnerOn(false);
-  };
-  
-  const deleteArticle = async (article_id) => {
-    setSpinnerOn(true);
-    setMessage('');
-  
-    try {
-      await axiosWithAuth.delete(`/articles/${article_id}`);
-      setMessage('Successfully deleted article!');
-      getArticles();
-    } catch (error) {
-      setMessage('Error deleting article.');
-    }
-  
-    setSpinnerOn(false);
-  };  
+const deleteArticle = async (article_id) => {
+  setSpinnerOn(true);
+  setMessage('');
+
+  try {
+    await axiosWithAuth.delete(`/articles/${article_id}`);
+    setMessage('Successfully deleted article!');
+    await getArticles();
+  } catch (error) {
+    setMessage('Error deleting article.');
+  }
+
+  setSpinnerOn(false);
+};  
 
   return (
     <React.StrictMode>
@@ -135,31 +147,36 @@ export default function App() {
           </NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<LoginForm login={login} />} />
-          <Route
-            path="/articles"
-            element={
-              <div>
-                <ArticleForm
-                  postArticle={postArticle}
-                  updateArticle={updateArticle}
-                  setCurrentArticleId={setCurrentArticleId}
-                  currentArticle={
-                    Array.isArray(articles) 
-                      ? articles.find((a) => a.article_id === currentArticleId) 
-                      : undefined
-                  }
-                />
-                <Articles
-                  articles={articles}
-                  getArticles={getArticles}
-                  deleteArticle={deleteArticle}
-                  setCurrentArticleId={setCurrentArticleId}
-                  currentArticleId={currentArticleId}
-                />
-              </div>
-            }
+          <Route path="/" 
+          element={<LoginForm login={login} 
           />
+        } 
+          />
+          <Route
+              path="/articles"
+              element={
+          <>
+            <ArticleForm
+                postArticle={postArticle}
+                updateArticle={updateArticle}
+                setCurrentArticleId={setCurrentArticleId}
+                currentArticle={
+                    Array.isArray(articles) 
+                        ? articles.find((a) => a.article_id === currentArticleId) 
+                        : undefined
+                }
+            />
+            <Articles
+                articles={articles}
+                getArticles={getArticles}
+                deleteArticle={deleteArticle}
+                setCurrentArticleId={setCurrentArticleId}
+                currentArticleId={currentArticleId}
+            />
+          </>
+        }
+          />
+
         </Routes>
         <footer>Bloom Institute of Technology 2022</footer>
         <Spinner on={spinnerOn} />

@@ -23,16 +23,22 @@ export default function ArticleForm({ postArticle, updateArticle, setCurrentArti
     setValues({ ...values, [id]: value })
   }
 
-  const onSubmit = async (evt) => {
+  const onSubmit = evt => {
     evt.preventDefault()
     if (currentArticle) {
-      await updateArticle({ article_id: currentArticle.article_id, article: values });
-      setCurrentArticleId(null);
+      updateArticle({ article_id: currentArticle.article_id, article: values })
+        .then(() => {
+          setValues(initialFormValues);
+          getArticles();
+        });  
     } else {
-      await postArticle(values);
-      setValues(initialFormValues);
+      postArticle(values)
+        .then(() => {
+          setValues(initialFormValues);
+          getArticles();
+        });  
     }
-  }    
+  }        
 
   const isDisabled = () => {
     return !(values.title && values.text && values.topic);
@@ -69,7 +75,7 @@ export default function ArticleForm({ postArticle, updateArticle, setCurrentArti
       </select>
       <div className="button-group">
         <button disabled={isDisabled()} id="submitArticle">Submit</button>
-        <button onClick={Function.prototype}>Cancel edit</button>
+        <button onClick={cancelEdit}>Cancel edit</button>
       </div>
     </form>
   )
