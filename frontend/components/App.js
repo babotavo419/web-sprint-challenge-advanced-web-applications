@@ -157,22 +157,27 @@ const deleteArticle = async (article_id) => {
               element={
           <>
             <ArticleForm
-                postArticle={postArticle}
-                updateArticle={updateArticle}
-                setCurrentArticleId={setCurrentArticleId}
-                currentArticle={
-                    Array.isArray(articles) 
-                        ? articles.find((a) => a.article_id === currentArticleId) 
-                        : undefined
-                }
-            />
+              postArticle={postArticle}
+              updateArticle={updateArticle}
+              setCurrentArticleId={setCurrentArticleId}
+              setCurrentArticle={setCurrentArticle}
+              getArticles={getArticles}
+              currentArticle={
+            Array.isArray(articles) 
+              ? articles.find((a) => a.article_id === currentArticleId) 
+              : undefined
+      }
+          />
+
             <Articles
-                articles={articles}
-                getArticles={getArticles}
-                deleteArticle={deleteArticle}
-                setCurrentArticleId={setCurrentArticleId}
-                currentArticleId={currentArticleId}
+              articles={articles}
+              getArticles={getArticles}
+              deleteArticle={deleteArticle}
+              setCurrentArticleId={setCurrentArticleId}
+              setCurrentArticle={setCurrentArticle}
+              currentArticleId={currentArticleId}
             />
+
           </>
         }
           />

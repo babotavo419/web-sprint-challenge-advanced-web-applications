@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import PT from 'prop-types'
 
-export default function Articles({ articles, getArticles, deleteArticle, setCurrentArticleId, currentArticleId }) {
+export default function Articles({ articles, getArticles, deleteArticle, setCurrentArticleId, setCurrentArticle, currentArticleId }) {
   // Check if token exists
   const token = window.localStorage.getItem('token');
 
@@ -13,9 +13,11 @@ export default function Articles({ articles, getArticles, deleteArticle, setCurr
 
   const handleEdit = (article_id) => {
     setCurrentArticleId(article_id);
-    setCurrentArticleId(null);
-    setCurrentArticle(null);
+    
+    const currentArticle = articles.find((article) => article.article_id === article_id);
+    setCurrentArticle(currentArticle);
   }
+  
 
   const handleDelete = (article_id) => {
     deleteArticle(article_id);

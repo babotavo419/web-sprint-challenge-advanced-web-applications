@@ -3,7 +3,7 @@ import PT from 'prop-types'
 
 const initialFormValues = { title: '', text: '', topic: '' }
 
-export default function ArticleForm({ postArticle, updateArticle, setCurrentArticleId, currentArticle }) {
+export default function ArticleForm({ postArticle, updateArticle, setCurrentArticleId, setCurrentArticle, getArticles, currentArticle }) {
   const [values, setValues] = useState(initialFormValues)
 
   useEffect(() => {
