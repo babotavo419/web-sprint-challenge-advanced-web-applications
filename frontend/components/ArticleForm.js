@@ -30,15 +30,19 @@ export default function ArticleForm({ postArticle, updateArticle, setCurrentArti
         .then(() => {
           setValues(initialFormValues);
           getArticles();
+          setCurrentArticleId(null);
+          setCurrentArticle(null); 
         });  
     } else {
       postArticle(values)
         .then(() => {
           setValues(initialFormValues);
           getArticles();
+          setCurrentArticleId(null);
+          setCurrentArticle(null);
         });  
     }
-  }        
+  }          
 
   const isDisabled = () => {
     return !(values.title && values.text && values.topic);
@@ -46,6 +50,7 @@ export default function ArticleForm({ postArticle, updateArticle, setCurrentArti
 
   const cancelEdit = () => {
     setCurrentArticleId(null);
+    setCurrentArticle(null);
   }
 
   return (
