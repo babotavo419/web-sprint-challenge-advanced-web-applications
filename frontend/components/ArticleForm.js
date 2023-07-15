@@ -34,15 +34,15 @@ export default function ArticleForm({ postArticle, updateArticle, setCurrentArti
           setCurrentArticle(null); 
         });  
     } else {
+      setCurrentArticleId(null);
+      setCurrentArticle(null);
       postArticle(values)
         .then(() => {
           setValues(initialFormValues);
           getArticles();
-          setCurrentArticleId(null);
-          setCurrentArticle(null);
         });  
     }
-  }          
+  }            
 
   const isDisabled = () => {
     return !(values.title && values.text && values.topic);

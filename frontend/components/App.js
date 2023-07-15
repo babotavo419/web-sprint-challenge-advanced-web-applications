@@ -27,11 +27,15 @@ export default function App() {
   useEffect(() => {
     if (currentArticleId != null) {
       const article = articles.find(art => art.article_id === currentArticleId);
-      setCurrentArticle(article);
+      if (article) {
+        setCurrentArticle(article);
+      } else {
+        setCurrentArticle(null);
+      }
     } else {
       setCurrentArticle(null);
     }
-  }, [currentArticleId, articles]);
+  }, [currentArticleId, articles]);  
 
   const login = async ({ username, password }) => {
     setMessage(null);
