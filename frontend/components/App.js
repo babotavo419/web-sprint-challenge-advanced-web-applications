@@ -49,7 +49,7 @@ const login = async ({ username, password }) => {
     if (response.status === 200) {
       localStorage.setItem('token', response.data.token);
       setUsername(username);  // Store the username
-      setMessage(`Here are your articles, ${username}!`);  // Use the username in the message
+      setMessage(`Here are your articles, ${response.data.username}!`);  // Use the username in the message
       setSpinnerOn(false);
       redirectToArticles();
     }
