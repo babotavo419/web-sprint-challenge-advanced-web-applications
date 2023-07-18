@@ -17,6 +17,7 @@ export default function App() {
   const navigate = useNavigate();
   const redirectToLogin = () => navigate('/');
   const redirectToArticles = () => navigate('/articles');
+  const [username, setUsername] = useState('')
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -35,29 +36,30 @@ export default function App() {
     }
   }, [currentArticleId, articles]);  
 
-  const login = async ({ username, password }) => {
-    setMessage(null);
-    setSpinnerOn(true);
-  
-    try {
-      const response = await axiosWithAuth.post('/login', {
-        username,
-        password,
-      });
-  
-      if (response.status === 200) {
-        localStorage.setItem('token', response.data.token);
-        setMessage(response.data.message);
-        setSpinnerOn(false);
-        redirectToArticles();
-      }
-    } catch (error) {
-      setMessage('Login failed');
-      setSpinnerOn(false);
-    }
-  };  
+const login = async ({ username, password }) => {
+  setMessage(null);
+  setSpinnerOn(true);
 
-  const getArticles = useCallback(async () => {
+  try {
+    const response = await axiosWithAuth.post('/login', {
+      username,
+      password,
+    });
+
+    if (response.status === 200) {
+      localStorage.setItem('token', response.data.token);
+      setUsername(username);  // Store the username
+      setMessage(`Here are your articles, ${username}!`);  // Use the username in the message
+      setSpinnerOn(false);
+      redirectToArticles();
+    }
+  } catch (error) {
+    setMessage('Login failed');
+    setSpinnerOn(false);
+  }
+};  
+
+const getArticles = useCallback(async () => {
   setSpinnerOn(true);
   setMessage('');
 
@@ -65,7 +67,7 @@ export default function App() {
     const response = await axiosWithAuth.get('/articles');
     if (response.data.articles && Array.isArray(response.data.articles)) {
       setArticles(response.data.articles);
-      setMessage('Successfully retrieved articles!');
+      setMessage(`Here are your articles, ${username}!`);  // Use the username in the message
     } else {
       console.error('Invalid data type received:', response.data);
     }
@@ -79,7 +81,7 @@ export default function App() {
   }    
 
   setSpinnerOn(false);
-}, []);
+}, [username]);  // Add username as a dependency to the useCallback hook
   
 const postArticle = async (article) => {
   setSpinnerOn(true);
@@ -190,4 +192,5 @@ const deleteArticle = async (article_id) => {
       </div>
     </div>
     </React.StrictMode>
-  );}  
+  );
+}  
