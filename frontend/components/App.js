@@ -32,8 +32,6 @@ export default function App() {
       } else {
         setCurrentArticle(null);
       }
-    } else {
-      setCurrentArticle(null);
     }
   }, [currentArticleId, articles]);  
 

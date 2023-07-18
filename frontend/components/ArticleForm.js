@@ -51,7 +51,9 @@ export default function ArticleForm({ postArticle, updateArticle, setCurrentArti
   const cancelEdit = () => {
     setCurrentArticleId(null);
     setCurrentArticle(null);
+    setValues(initialFormValues); // Reset form values
   }
+  
 
   return (
     // ✨ fix the JSX: make the heading display either "Edit" or "Create"
@@ -80,7 +82,7 @@ export default function ArticleForm({ postArticle, updateArticle, setCurrentArti
       </select>
       <div className="button-group">
         <button disabled={isDisabled()} id="submitArticle">Submit</button>
-        <button onClick={cancelEdit}>Cancel edit</button>
+        <button type="button" onClick={cancelEdit}>Cancel edit</button>
       </div>
     </form>
   )
