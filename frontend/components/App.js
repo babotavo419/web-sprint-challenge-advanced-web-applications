@@ -135,7 +135,7 @@ const deleteArticle = async (article_id) => {
       <div id="message">
         {message && <Message message={message} />}
       </div>
-      <button id="logout" onClick={logout}>
+      <button type="button" id="logout" onClick={logout}>
         Logout from app
       </button>
       <div id="wrapper" style={{ opacity: spinnerOn ? '0.25' : '1' }}>

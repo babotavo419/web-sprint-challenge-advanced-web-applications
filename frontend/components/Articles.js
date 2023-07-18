@@ -13,7 +13,7 @@ export default function Articles({ articles, getArticles, deleteArticle, setCurr
 
   const handleEdit = (article_id) => {
     setCurrentArticleId(article_id);
-    
+
     const currentArticle = articles.find((article) => article.article_id === article_id);
     setCurrentArticle(currentArticle);
   }
@@ -43,11 +43,13 @@ export default function Articles({ articles, getArticles, deleteArticle, setCurr
                   <p>Topic: {art.topic}</p>
                 </div>
                 <div>
-                  <button 
+                  <button
+                    type="button" 
                     disabled={currentArticleId === art.article_id} 
                     onClick={() => handleEdit(art.article_id)}>Edit
                   </button>
                   <button 
+                    type="button"
                     disabled={currentArticleId === art.article_id} 
                     onClick={() => handleDelete(art.article_id)}>Delete
                   </button>
