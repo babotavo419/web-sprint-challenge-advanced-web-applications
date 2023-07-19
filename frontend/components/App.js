@@ -51,8 +51,8 @@ export default function App() {
         setUsername(username);  
         setSpinnerOn(false);
         redirectToArticles();
-        getArticles(); // Fetch articles after login
-        setMessage(`Here are your articles, ${username}!`);  // Set the message after the articles are fetched
+        getArticles();
+        setMessage(`Here are your articles, ${username}!`);
       }
     } catch (error) {
       setMessage('Login failed');
@@ -105,7 +105,7 @@ const updateArticle = async ({ article_id, article }) => {
 
   try {
     const response = await axiosWithAuth.put(`/articles/${article_id}`, article);
-    setMessage(`Nice update, ${username}!`); // Updated success message
+    setMessage(`Nice update, ${username}!`);
     await getArticles();
   } catch (error) {
     setMessage('Error updating article.');

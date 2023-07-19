@@ -6,7 +6,7 @@ const initialFormValues = {
   password: '',
 };
 
-export default function LoginForm({ login }) {  // login function passed as prop
+export default function LoginForm({ login }) {
   const [values, setValues] = useState(initialFormValues);
 
   const onChange = evt => {
@@ -16,8 +16,6 @@ export default function LoginForm({ login }) {  // login function passed as prop
 
   const onSubmit = evt => {
     evt.preventDefault();
-
-    // Call login function with form data
     login({username:values.username, password:values.password});
   };
 
@@ -48,5 +46,5 @@ export default function LoginForm({ login }) {  // login function passed as prop
 }
 
 LoginForm.propTypes = {
-  login: PT.func.isRequired,  // validate login function prop
+  login: PT.func.isRequired,
 };

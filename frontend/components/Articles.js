@@ -3,10 +3,7 @@ import { Navigate } from 'react-router-dom'
 import PT from 'prop-types'
 
 export default function Articles({ articles, getArticles, deleteArticle, setCurrentArticleId, setCurrentArticle, currentArticleId, username }) {
-  // Check if token exists
   const token = window.localStorage.getItem('token');
-
-  // Fetch articles on first render
   useEffect(() => {
     getArticles();
   }, [getArticles]);
@@ -18,7 +15,6 @@ export default function Articles({ articles, getArticles, deleteArticle, setCurr
     setCurrentArticle(currentArticle);
   }
   
-
   const handleDelete = async (article_id) => {
     const article = articles.find((art) => art.article_id === article_id);
     
@@ -27,9 +23,7 @@ export default function Articles({ articles, getArticles, deleteArticle, setCurr
     }
   };  
   
-
   if (!token) {
-    // Navigate to login if no token exists
     return <Navigate to="/" />;
   }
 

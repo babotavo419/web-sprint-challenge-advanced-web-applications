@@ -51,13 +51,11 @@ export default function ArticleForm({ postArticle, updateArticle, setCurrentArti
   const cancelEdit = () => {
     setCurrentArticleId(null);
     setCurrentArticle(null);
-    setValues(initialFormValues); // Reset form values
+    setValues(initialFormValues);
   }
   
 
   return (
-    // ✨ fix the JSX: make the heading display either "Edit" or "Create"
-    // and replace Function.prototype with the correct function
     <form id="form" onSubmit={onSubmit}>
   <h2>{currentArticle ? "Edit Article" : "Create Article"}</h2>
       <input
@@ -93,7 +91,7 @@ ArticleForm.propTypes = {
   postArticle: PT.func.isRequired,
   updateArticle: PT.func.isRequired,
   setCurrentArticleId: PT.func.isRequired,
-  currentArticle: PT.shape({ // can be null or undefined, meaning "create" mode (as opposed to "update")
+  currentArticle: PT.shape({
     article_id: PT.number.isRequired,
     title: PT.string.isRequired,
     text: PT.string.isRequired,
