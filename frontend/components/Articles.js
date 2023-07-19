@@ -13,15 +13,7 @@ export default function Articles({ articles, getArticles, deleteArticle, setCurr
 
     const currentArticle = articles.find((article) => article.article_id === article_id);
     setCurrentArticle(currentArticle);
-  }
-  
-  const handleDelete = async (article_id) => {
-    const article = articles.find((art) => art.article_id === article_id);
-    
-    if (article) {
-      await deleteArticle(article_id, article.title, username);
-    }
-  };  
+  }  
   
   if (!token) {
     return <Navigate to="/" />;
@@ -50,7 +42,7 @@ export default function Articles({ articles, getArticles, deleteArticle, setCurr
                   <button 
                     type="button"
                     disabled={currentArticleId === art.article_id} 
-                    onClick={() => handleDelete(art.article_id)}>Delete
+                    onClick={() => deleteArticle(art.article_id, art.title)}>Delete
                   </button>
                 </div>
               </div>
