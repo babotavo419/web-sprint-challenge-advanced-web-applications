@@ -122,8 +122,12 @@ const deleteArticle = async (article_id, articleTitle) => {
 
   try {
     await axiosWithAuth.delete(`/articles/${article_id}`);
+    
+    // filter out the deleted article from the local state
+    setArticles((prevArticles) => prevArticles.filter((article) => article.article_id !== article_id));
+    
     setMessage(`Article ${articleTitle} was deleted, ${username}!`);
-    await getArticles();
+    
   } catch (error) {
     setMessage('Error deleting article.');
   }
