@@ -13,16 +13,19 @@ const StyledMessage = styled.div`
 const MessageContainer = styled.div`
 `;
 
-export default function Message({ message }) {
+function Message({ message, setMessage }) {
   return (
-    <MessageContainer>
-    <StyledMessage key={message} id="message" className="Message__StyledMessage-sc-51el9x-0 eZpUtz">
-      {message}
-    </StyledMessage>
-  </MessageContainer>
-  )
+    <MessageContainer onClick={() => setMessage('')}>
+      <StyledMessage key={message} id="message" className="Message__StyledMessage-sc-51el9x-0 eZpUtz">
+        {message}
+      </StyledMessage>
+    </MessageContainer>
+  );
 }
 
 Message.propTypes = {
   message: PT.string.isRequired,
+  setMessage: PT.func.isRequired,
 }
+
+export default Message;

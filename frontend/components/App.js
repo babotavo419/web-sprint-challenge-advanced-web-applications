@@ -131,11 +131,11 @@ const deleteArticle = async (article_id, articleTitle) => {
   setSpinnerOn(false);
 };    
 
-  return (
-    <React.StrictMode>
+return (
+  <React.StrictMode>
     <div>
       <div id="message">
-        {message && <Message message={message} />}
+        {message && <Message message={message} setMessage={setMessage} />}
       </div>
       <button type="button" id="logout" onClick={logout}>
         Logout from app
