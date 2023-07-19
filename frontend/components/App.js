@@ -36,52 +36,51 @@ export default function App() {
     }
   }, [currentArticleId, articles]);  
 
-const login = async ({ username, password }) => {
-  setMessage(null);
-  setSpinnerOn(true);
-
-  try {
-    const response = await axiosWithAuth.post('/login', {
-      username,
-      password,
-    });
-
-    if (response.status === 200) {
-      localStorage.setItem('token', response.data.token);
-      setUsername(username);  // Store the username
-      setMessage(`Here are your articles, ${response.data.username}!`);  // Use the username in the message
+  const login = async ({ username, password }) => {
+    setMessage(null);
+    setSpinnerOn(true);
+  
+    try {
+      const response = await axiosWithAuth.post('/login', {
+        username,
+        password,
+      });
+  
+      if (response.status === 200) {
+        localStorage.setItem('token', response.data.token);
+        setUsername(username);  
+        setSpinnerOn(false);
+        redirectToArticles();
+        getArticles(); // Fetch articles after login
+        setMessage(`Here are your articles, ${username}!`);  // Set the message after the articles are fetched
+      }
+    } catch (error) {
+      setMessage('Login failed');
       setSpinnerOn(false);
-      redirectToArticles();
     }
-  } catch (error) {
-    setMessage('Login failed');
+  };  
+  
+  const getArticles = useCallback(async () => {
+    setSpinnerOn(true);
+  
+    try {
+      const response = await axiosWithAuth.get('/articles');
+      if (response.data.articles && Array.isArray(response.data.articles)) {
+        setArticles(response.data.articles);
+      } else {
+        console.error('Invalid data type received:', response.data);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setMessage('Session expired. Please login again.');
+        redirectToLogin();
+      } else {
+        setMessage('Error retrieving articles.');
+      }
+    }    
+  
     setSpinnerOn(false);
-  }
-};  
-
-const getArticles = useCallback(async () => {
-  setSpinnerOn(true);
-  setMessage('');
-
-  try {
-    const response = await axiosWithAuth.get('/articles');
-    if (response.data.articles && Array.isArray(response.data.articles)) {
-      setArticles(response.data.articles);
-      setMessage(`Here are your articles, ${username}!`);  // Use the username in the message
-    } else {
-      console.error('Invalid data type received:', response.data);
-    }
-  } catch (error) {
-    if (error.response && error.response.status === 401) {
-      setMessage('Session expired. Please login again.');
-      redirectToLogin();
-    } else {
-      setMessage('Error retrieving articles.');
-    }
-  }    
-
-  setSpinnerOn(false);
-}, [username]);
+  }, [username, message]);  
   
 const postArticle = async (article) => {
   setSpinnerOn(true);
