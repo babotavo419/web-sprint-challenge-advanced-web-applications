@@ -105,7 +105,6 @@ const updateArticle = async ({ article_id, article }) => {
 
   try {
     const response = await axiosWithAuth.put(`/articles/${article_id}`, article);
-    console.log('username:', username)
     setMessage(`Nice update, ${username}!`); // Updated success message
     await getArticles();
   } catch (error) {
@@ -117,20 +116,20 @@ const updateArticle = async ({ article_id, article }) => {
 };
 
   
-const deleteArticle = async (article_id) => {
+const deleteArticle = async (article_id, articleTitle) => {
   setSpinnerOn(true);
   setMessage('');
 
   try {
     await axiosWithAuth.delete(`/articles/${article_id}`);
-    setMessage('Successfully deleted article!');
+    setMessage(`Article ${articleTitle} was deleted, ${username}!`);
     await getArticles();
   } catch (error) {
     setMessage('Error deleting article.');
   }
 
   setSpinnerOn(false);
-};  
+};    
 
   return (
     <React.StrictMode>
@@ -181,6 +180,7 @@ const deleteArticle = async (article_id) => {
               setCurrentArticleId={setCurrentArticleId}
               setCurrentArticle={setCurrentArticle}
               currentArticleId={currentArticleId}
+              username={username}
             />
 
           </>

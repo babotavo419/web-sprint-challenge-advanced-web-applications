@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import PT from 'prop-types'
 
-export default function Articles({ articles, getArticles, deleteArticle, setCurrentArticleId, setCurrentArticle, currentArticleId }) {
+export default function Articles({ articles, getArticles, deleteArticle, setCurrentArticleId, setCurrentArticle, currentArticleId, username }) {
   // Check if token exists
   const token = window.localStorage.getItem('token');
 
@@ -19,9 +19,14 @@ export default function Articles({ articles, getArticles, deleteArticle, setCurr
   }
   
 
-  const handleDelete = (article_id) => {
-    deleteArticle(article_id);
-  }
+  const handleDelete = async (article_id) => {
+    const article = articles.find((art) => art.article_id === article_id);
+    
+    if (article) {
+      await deleteArticle(article_id, article.title, username);
+    }
+  };  
+  
 
   if (!token) {
     // Navigate to login if no token exists
