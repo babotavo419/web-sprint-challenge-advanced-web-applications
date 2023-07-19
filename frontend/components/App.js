@@ -81,7 +81,7 @@ const getArticles = useCallback(async () => {
   }    
 
   setSpinnerOn(false);
-}, [username]);  // Add username as a dependency to the useCallback hook
+}, [username]);
   
 const postArticle = async (article) => {
   setSpinnerOn(true);
@@ -89,7 +89,7 @@ const postArticle = async (article) => {
 
   try {
     const response = await axiosWithAuth.post('/articles', article);
-    setMessage('Successfully posted new article!');
+    setMessage(`Well done, ${username}. Great article!`);
     await getArticles();
   } catch (error) {
     setMessage('Error posting new article.');
@@ -98,6 +98,7 @@ const postArticle = async (article) => {
   setSpinnerOn(false);
   return Promise.resolve();
 };
+
 
 const updateArticle = async ({ article_id, article }) => {
   setSpinnerOn(true);
