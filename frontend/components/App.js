@@ -80,7 +80,7 @@ export default function App() {
     }    
   
     setSpinnerOn(false);
-  }, [username, message]);  
+  }, []);  
   
 const postArticle = async (article) => {
   setSpinnerOn(true);
@@ -193,4 +193,4 @@ return (
     </div>
     </React.StrictMode>
   );
-}  
+} 
