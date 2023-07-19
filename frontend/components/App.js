@@ -105,7 +105,8 @@ const updateArticle = async ({ article_id, article }) => {
 
   try {
     const response = await axiosWithAuth.put(`/articles/${article_id}`, article);
-    setMessage('Successfully updated article!');
+    console.log('username:', username)
+    setMessage(`Nice update, ${username}!`); // Updated success message
     await getArticles();
   } catch (error) {
     setMessage('Error updating article.');
