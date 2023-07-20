@@ -122,13 +122,20 @@ const deleteArticle = async (article_id, articleTitle) => {
 
   try {
     await axiosWithAuth.delete(`/articles/${article_id}`);
-    setArticles((prevArticles) => prevArticles.filter((article) => article.article_id !== article_id));
-    setMessage(`Article ${articleTitle} was deleted, ${username}!`);
+    setTimeout(async () => {
+      // After a delay, fetch the updated list from the server
+      const response = await axiosWithAuth.get('/articles');
+      // Update the state with the new list
+      setArticles(response.data);
+      setMessage(`Article ${articleTitle} was deleted, ${username}!`);
+      setSpinnerOn(false);
+    }, 750); // Adjust the timeout duration as needed
   } catch (error) {
     setMessage('Error deleting article.');
+    setSpinnerOn(false);
   }
-  setSpinnerOn(false);
-};    
+};
+    
 
 return (
   <React.StrictMode>
