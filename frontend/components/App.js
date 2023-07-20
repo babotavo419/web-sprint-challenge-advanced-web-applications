@@ -129,7 +129,7 @@ const deleteArticle = async (article_id, articleTitle) => {
       setArticles(response.data);
       setMessage(`Article ${articleTitle} was deleted, ${username}!`);
       setSpinnerOn(false);
-    }, 700); // Adjust the timeout duration as needed
+    }, 600); // Adjust the timeout duration as needed
   } catch (error) {
     setMessage('Error deleting article.');
     setSpinnerOn(false);
