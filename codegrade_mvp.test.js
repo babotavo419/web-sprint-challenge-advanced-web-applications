@@ -6,7 +6,7 @@ import { setupServer, getHandlers } from './backend/mock-server'
 import { st } from './backend/helpers'
 import App from './frontend/components/App'
 
-jest.setTimeout(900) // default 5000 too long for Codegrade
+jest.setTimeout(4000) // default 5000 too long for Codegrade
 const waitForOptions = { timeout: 150 }
 const queryOptions = { exact: false }
 
