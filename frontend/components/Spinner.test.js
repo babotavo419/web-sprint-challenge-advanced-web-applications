@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import Spinner from './Spinner'
+import '@testing-library/jest-dom'
 
 test('Spinner renders correctly when on is true', () => {
   const { container, getByText } = render(<Spinner on={true} />)
