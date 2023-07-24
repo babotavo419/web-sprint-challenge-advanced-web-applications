@@ -197,24 +197,20 @@ describe('Advanced Applications', () => {
       await screen.findByText('Nice update, Foo!', queryOptions, waitForOptions)
     })
   })
-  test(`[9] Clicking delete button on an article
-  - removes it from the page
-  - a success message renders on the page
-  - Review how to make DELETE requests to an external API using Axios.`, async () => {
-    await loginFlow()
-    // ensure the article is there
-    const articleElement = screen.getByText(st.closuresTitle, queryOptions);
-    expect(articleElement).toBeInTheDocument();
-    
-    // hitting delete
-    fireEvent.click(screen.getAllByText('Delete')[0])
-    
-    // article eventually disappears from the page
-    await waitForElementToBeRemoved(() => screen.queryByText(st.closuresTitle, queryOptions))
-    expect(screen.queryByText(st.closuresText, queryOptions)).not.toBeInTheDocument()
-    expect(screen.queryByText(`Topic: ${st.closuresTopic}`, queryOptions)).not.toBeInTheDocument()
-    
-    // success message arrives eventually
-    await screen.findByText('Article 1 was deleted, Foo!', queryOptions, waitForOptions)
+  describe('Deleting an existing article', () => {
+    test(`[9] Clicking delete button on an article
+        - removes it from the page
+        - a success message renders on the page
+        - Review how to make DELETE requests to an external API using Axios.`, async () => {
+      await loginFlow()
+      // hitting delete
+      fireEvent.click(screen.getAllByText('Delete')[0])
+      // article eventually disappears from the page
+      await waitForElementToBeRemoved(() => screen.queryByText(st.closuresTitle, queryOptions))
+      expect(screen.queryByText(st.closuresText, queryOptions)).not.toBeInTheDocument()
+      expect(screen.queryByText(`Topic: ${st.closuresTopic}`, queryOptions)).not.toBeInTheDocument()
+      // success message arrives eventually
+      await screen.findByText('Article 1 was deleted, Foo!', queryOptions, waitForOptions)
+    })
   })
 })
