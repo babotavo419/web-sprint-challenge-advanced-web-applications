@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import axiosWithAuth from '../axios/axiosWithAuth';
 import { NavLink, Routes, Route, useNavigate } from 'react-router-dom';
-import Articles from './Articles';
-import LoginForm from './LoginForm';
 import Message from './Message';
-import ArticleForm from './ArticleForm';
 import Spinner from './Spinner';
+
+// Lazy load the LoginForm, Articles, and ArticleForm components
+const LoginForm = lazy(() => import('./LoginForm'));
+const Articles = lazy(() => import('./Articles'));
+const ArticleForm = lazy(() => import('./ArticleForm'));
 
 export default function App() {
   const [message, setMessage] = useState('')
@@ -137,67 +139,69 @@ export default function App() {
     setSpinnerOn(false);
   };   
 
-return (
-  <React.StrictMode>
-    <div>
-      <div id="message">
-        {message && <Message message={message} setMessage={setMessage} />}
-      </div>
-      <button type="button" id="logout" onClick={logout}>
-        Logout from app
-      </button>
-      <div id="wrapper" style={{ opacity: spinnerOn ? '0.25' : '1' }}>
-        <h1>Advanced Web Applications</h1>
-        <nav>
-          <NavLink to="/" id="loginScreen" end>
-            Login
-          </NavLink>{' '}
-          <NavLink to="/articles" id="articlesScreen">
-            Articles
-          </NavLink>
-        </nav>
-        <Routes>
-          <Route path="/" 
-          element={<LoginForm login={login} 
-          />
-        } 
-          />
-          <Route
+  return (
+    <React.StrictMode>
+      <div>
+        <div id="message">
+          {message && <Message message={message} setMessage={setMessage} />}
+        </div>
+        <button type="button" id="logout" onClick={logout}>
+          Logout from app
+        </button>
+        <div id="wrapper" style={{ opacity: spinnerOn ? '0.25' : '1' }}>
+          <h1>Advanced Web Applications</h1>
+          <nav>
+            <NavLink to="/" id="loginScreen" end>
+              Login
+            </NavLink>{' '}
+            <NavLink to="/articles" id="articlesScreen">
+              Articles
+            </NavLink>
+          </nav>
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <Suspense fallback={<Spinner on={spinnerOn} />}>
+                  <LoginForm login={login} />
+                </Suspense>
+              } 
+            />
+            <Route
               path="/articles"
               element={
-          <>
-            <ArticleForm
-              postArticle={postArticle}
-              updateArticle={updateArticle}
-              setCurrentArticleId={setCurrentArticleId}
-              setCurrentArticle={setCurrentArticle}
-              getArticles={getArticles}
-              currentArticle={
-            Array.isArray(articles) 
-              ? articles.find((a) => a.article_id === currentArticleId) 
-              : undefined
-      }
-          />
-
-            <Articles
-              articles={articles}
-              getArticles={getArticles}
-              deleteArticle={deleteArticle}
-              setCurrentArticleId={setCurrentArticleId}
-              setCurrentArticle={setCurrentArticle}
-              currentArticleId={currentArticleId}
-              username={username}
+                <Suspense fallback={<Spinner on={spinnerOn} />}>
+                  <>
+                    <ArticleForm
+                      postArticle={postArticle}
+                      updateArticle={updateArticle}
+                      setCurrentArticleId={setCurrentArticleId}
+                      setCurrentArticle={setCurrentArticle}
+                      getArticles={getArticles}
+                      currentArticle={
+                        Array.isArray(articles) 
+                          ? articles.find((a) => a.article_id === currentArticleId) 
+                          : undefined
+                      }
+                    />
+                    <Articles
+                      articles={articles}
+                      getArticles={getArticles}
+                      deleteArticle={deleteArticle}
+                      setCurrentArticleId={setCurrentArticleId}
+                      setCurrentArticle={setCurrentArticle}
+                      currentArticleId={currentArticleId}
+                      username={username}
+                    />
+                  </>
+                </Suspense>
+              }
             />
-
-          </>
-        }
-          />
-
-        </Routes>
-        <footer>Bloom Institute of Technology 2022</footer>
-        <Spinner on={spinnerOn} />
+          </Routes>
+          <footer>Bloom Institute of Technology 2022</footer>
+          <Spinner on={spinnerOn} />
+        </div>
       </div>
-    </div>
     </React.StrictMode>
   );
-} 
+}
