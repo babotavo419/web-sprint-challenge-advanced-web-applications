@@ -119,12 +119,13 @@ export default function App() {
     setMessage('');
   
     try {
-      // Assume deletion will be successful
+      // Make the API call first
+      await axiosWithAuth.delete(`/articles/${article_id}`);
+  
+      // After successful deletion, update the UI
       setArticles((prevArticles) =>
         prevArticles.filter((article) => article.article_id !== article_id)
       );
-  
-      await axiosWithAuth.delete(`/articles/${article_id}`);
   
       setMessage(`Article ${articleTitle} was deleted, ${username}!`);
     } catch (error) {
@@ -134,7 +135,7 @@ export default function App() {
     }
   
     setSpinnerOn(false);
-  };  
+  };   
 
 return (
   <React.StrictMode>
