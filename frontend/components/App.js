@@ -82,39 +82,37 @@ export default function App() {
     setSpinnerOn(false);
   }, []);  
   
-const postArticle = async (article) => {
-  setSpinnerOn(true);
-  setMessage('');
-
-  try {
-    const response = await axiosWithAuth.post('/articles', article);
-    setMessage(`Well done, ${username}. Great article!`);
-    await getArticles();
-  } catch (error) {
-    setMessage('Error posting new article.');
-  }
-
-  setSpinnerOn(false);
-  return Promise.resolve();
-};
-
-
-const updateArticle = async ({ article_id, article }) => {
-  setSpinnerOn(true);
-  setMessage('');
-
-  try {
-    const response = await axiosWithAuth.put(`/articles/${article_id}`, article);
-    setMessage(`Nice update, ${username}!`);
-    await getArticles();
-  } catch (error) {
-    setMessage('Error updating article.');
-  }
-
-  setSpinnerOn(false);
-  return Promise.resolve(); 
-};
-
+  const postArticle = async (article) => {
+    setSpinnerOn(true);
+    setMessage('');
+  
+    try {
+      await axiosWithAuth.post('/articles', article);
+      setMessage(`Well done, ${username}. Great article!`);
+      await getArticles();
+    } catch (error) {
+      setMessage('Error posting new article.');
+    }
+  
+    setSpinnerOn(false);
+    return Promise.resolve();
+  };
+  
+  const updateArticle = async ({ article_id, article }) => {
+    setSpinnerOn(true);
+    setMessage('');
+  
+    try {
+      await axiosWithAuth.put(`/articles/${article_id}`, article);
+      setMessage(`Nice update, ${username}!`);
+      await getArticles();
+    } catch (error) {
+      setMessage('Error updating article.');
+    }
+  
+    setSpinnerOn(false);
+    return Promise.resolve(); 
+  };  
   
 const deleteArticle = async (article_id, articleTitle) => {
   setSpinnerOn(true);
