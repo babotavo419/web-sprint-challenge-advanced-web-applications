@@ -126,7 +126,7 @@ const deleteArticle = async (article_id, articleTitle) => {
       // After a delay, fetch the updated list from the server
       const response = await axiosWithAuth.get('/articles');
       // Update the state with the new list
-      setArticles(response.data);
+      setArticles(response.data.articles);
       setMessage(`Article ${articleTitle} was deleted, ${username}!`);
       setSpinnerOn(false);
     }, 600); // Adjust the timeout duration as needed
