@@ -114,26 +114,27 @@ export default function App() {
     return Promise.resolve(); 
   };  
   
-const deleteArticle = async (article_id, articleTitle) => {
-  setSpinnerOn(true);
-  setMessage('');
-
-  try {
-    await axiosWithAuth.delete(`/articles/${article_id}`);
-    setTimeout(async () => {
-      // After a delay, fetch the updated list from the server
-      const response = await axiosWithAuth.get('/articles');
-      // Update the state with the new list
-      setArticles(response.data.articles);
+  const deleteArticle = async (article_id, articleTitle) => {
+    setSpinnerOn(true);
+    setMessage('');
+  
+    try {
+      // Assume deletion will be successful
+      setArticles((prevArticles) =>
+        prevArticles.filter((article) => article.article_id !== article_id)
+      );
+  
+      await axiosWithAuth.delete(`/articles/${article_id}`);
+  
       setMessage(`Article ${articleTitle} was deleted, ${username}!`);
-      setSpinnerOn(false);
-    }, 600); // Adjust the timeout duration as needed
-  } catch (error) {
-    setMessage('Error deleting article.');
+    } catch (error) {
+      // If error occurs, refresh the list of articles
+      await getArticles();
+      setMessage('Error deleting article.');
+    }
+  
     setSpinnerOn(false);
-  }
-};
-    
+  };  
 
 return (
   <React.StrictMode>
