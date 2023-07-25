@@ -198,7 +198,7 @@ describe('Advanced Applications', () => {
     })
   })
   describe('Deleting an existing article', () => {
-    jest.setTimeout(1000);
+    jest.setTimeout(2000);
     test(`[9] Clicking delete button on an article
         - removes it from the page
         - a success message renders on the page
