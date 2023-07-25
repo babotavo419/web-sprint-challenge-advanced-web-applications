@@ -94,17 +94,9 @@ async function login(user) {
   }
 }
 
-async function checkToken(tokenWithBearer) {
-  const token = tokenWithBearer.split(" ")[1];
-  try {
-    const decodedToken = jwt.verify(token, thisShouldBeSecret);
-    return decodedToken;
-  } catch (err) {
-    console.error("Error verifying token:", err);
-    throw err;
-  }
+async function checkToken(token) {
+  return jwt.verify(token, thisShouldBeSecret)
 }
-
 
 async function getArticles(token) {
   try {
