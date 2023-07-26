@@ -117,23 +117,25 @@ export default function App() {
   const deleteArticle = (article_id, articleTitle) => {
     setSpinnerOn(true);
     setMessage('');
-  
     // Make the API call first
     axiosWithAuth.delete(`/articles/${article_id}`)
-      .then(() => {
-        // After successful deletion, update the UI
-        setArticles((prevArticles) =>
-          prevArticles.filter((article) => article.article_id !== article_id)
-        );
-  
-        setMessage(`Article ${articleTitle} was deleted, ${username}!`);
-      })
+    // Then update the UI
+    .then(() => {
+      // After successful deletion, update the UI
+      setArticles((prevArticles) => {
+        const updatedArticles = prevArticles.filter((article) => article.article_id !== article_id);
+        return updatedArticles;
+      });
+      setMessage(`Article ${articleTitle} was deleted, ${username}!`);
+    })    
       .catch(async (error) => {
+        console.log('Error deleting article:', error);
         // If error occurs, refresh the list of articles
         await getArticles();
         setMessage('Error deleting article.');
       })
       .finally(() => {
+        console.log('Operation finished.');
         setSpinnerOn(false);
       });
   };    
