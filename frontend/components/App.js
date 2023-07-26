@@ -129,13 +129,11 @@ export default function App() {
       setMessage(`Article ${articleTitle} was deleted, ${username}!`);
     })    
       .catch(async (error) => {
-        console.log('Error deleting article:', error);
         // If error occurs, refresh the list of articles
         await getArticles();
         setMessage('Error deleting article.');
       })
       .finally(() => {
-        console.log('Operation finished.');
         setSpinnerOn(false);
       });
   };    
