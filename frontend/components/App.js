@@ -131,6 +131,7 @@ export default function App() {
       .catch(async (error) => {
         // If error occurs, refresh the list of articles
         await getArticles();
+        console.log(error);
         setMessage('Error deleting article.');
       })
       .finally(() => {
