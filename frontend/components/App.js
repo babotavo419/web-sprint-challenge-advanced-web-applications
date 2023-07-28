@@ -126,7 +126,7 @@ export default function App() {
         const updatedArticles = prevArticles.filter((article) => article.article_id !== article_id);
         return updatedArticles;
       });
-      setMessage(`Article ${articleTitle} was deleted, ${username}!`);
+      setMessage(`Article ${article_id} was deleted, ${username}!`);
     })    
       .catch(async (error) => {
         // If error occurs, refresh the list of articles
